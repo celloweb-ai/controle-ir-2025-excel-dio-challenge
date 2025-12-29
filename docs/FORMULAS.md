@@ -1,607 +1,273 @@
-# 🧮 Documentação de Fórmulas
+# 🔢 Documentação de Fórmulas
 
-## 📊 Visão Geral
+## 📊 Fórmulas Utilizadas no Projeto
 
-Este documento detalha todas as fórmulas utilizadas na planilha `Controle_IR_2025.xlsx`, com explicações passo a passo e exemplos práticos.
-
----
-
-## 📁 Índice de Fórmulas
-
-1. [Fórmulas do Dashboard](#-1-fórmulas-do-dashboard)
-2. [Fórmulas de Totalização](#-2-fórmulas-de-totalização)
-3. [Fórmulas de Validação](#-3-fórmulas-de-validação)
-4. [Fórmulas do Resumo Fiscal](#-4-fórmulas-do-resumo-fiscal)
-5. [Fórmulas Auxiliares](#-5-fórmulas-auxiliares)
+Documentação completa de todas as fórmulas do Excel utilizadas na planilha **Controle_IR_2025.xlsx**.
 
 ---
 
-## 🏗️ 1. Fórmulas do Dashboard
+## 📊 Dashboard
 
-### 1.1. Rendimentos Totais
-
-**Localização**: Dashboard!D4
-
+### Rendimentos Totais
 ```excel
-=SOMA(Rendimentos!E6:E1000)
+=SOMA(Rendimentos!D:D)
 ```
+**Função:** Soma todos os valores da coluna D (Valor) da aba Rendimentos
+**Resultado:** Valor total de todos os rendimentos registrados
 
-**Explicação**:
-- `SOMA()`: Função que adiciona todos os valores de um intervalo
-- `Rendimentos!E6:E1000`: Referência ao intervalo de valores na aba Rendimentos
-  - `Rendimentos!` = Nome da aba
-  - `E6:E1000` = Intervalo da coluna E (valores), linhas 6 a 1000
-
-**Exemplo**:
-```
-Se Rendimentos!E6:E10 contém:
-E6: R$ 5.000,00
-E7: R$ 5.000,00
-E8: R$ 5.000,00
-E9: R$ 1.500,00
-E10: R$ 2.000,00
-
-Resultado: R$ 18.500,00
-```
-
-### 1.2. Deduções Totais
-
-**Localização**: Dashboard!D5
-
+### Deduções Totais
 ```excel
-=SOMA(Deduções!E6:E1000)
+=SOMA(Deducoes!D:D)
 ```
+**Função:** Soma todos os valores da coluna D da aba Deduções
+**Resultado:** Valor total de todas as deduções
 
-**Explicação**:
-Idêntica à fórmula anterior, mas referenciando a aba de Deduções.
-
-### 1.3. Despesas Profissionais Totais
-
-**Localização**: Dashboard!D6
-
+### Despesas Profissionais
 ```excel
-=SOMA('Despesas Profissionais'!E6:E1000)
+=SOMA(Despesas!D:D)
 ```
+**Função:** Soma todos os valores da coluna D da aba Despesas
+**Resultado:** Valor total das despesas profissionais
 
-**Explicação**:
-- `'Despesas Profissionais'!` = Nome da aba com espaços (requer aspas simples)
-- Mesma lógica de soma das demais abas
-
-### 1.4. Base de Cálculo
-
-**Localização**: Dashboard!D7
-
+### Base de Cálculo
 ```excel
-=D4-D5-D6
+=B4-B5-B6
 ```
+**Função:** Calcula a base tributável
+**Fórmula:** Rendimentos - Deduções - Despesas
+**Resultado:** Valor sobre o qual o imposto é calculado
 
-**Explicação**:
-- Cálculo: Rendimentos - Deduções - Despesas
-- Resultado é a base tributável estimada
-
-**Exemplo**:
-```
-D4 (Rendimentos): R$ 18.500,00
-D5 (Deduções):  R$ 2.950,00
-D6 (Despesas):    R$ 1.980,00
-
-Base = 18.500 - 2.950 - 1.980 = R$ 13.570,00
-```
-
-### 1.5. Imposto Estimado (15%)
-
-**Localização**: Dashboard!D8
-
+### Imposto Estimado (15%)
 ```excel
-=D7*0,15
+=B7*0.15
 ```
+**Função:** Calcula imposto simples de 15%
+**Observação:** Esta é uma **estimativa simplificada**. O cálculo oficial considera:
+- Tabela progressiva de alíquotas
+- Deduções específicas por faixa
+- Imposto retido na fonte
 
-**Explicação**:
-- Multiplica a Base de Cálculo por 15%
-- `0,15` = 15% em formato decimal
-- Cálculo simplificado (alíquota única)
-
-**Observação**:
-Esta é uma estimativa. A tabela progressiva real do IRPF possui múltiplas alíquotas:
-- Até R$ 2.112,00: Isento
-- R$ 2.112,01 a R$ 2.826,65: 7,5%
-- R$ 2.826,66 a R$ 3.751,05: 15%
-- R$ 3.751,06 a R$ 4.664,68: 22,5%
-- Acima de R$ 4.664,68: 27,5%
-
-### 1.6. Patrimônio Total
-
-**Localização**: Dashboard!D9
-
+### Patrimônio Total
 ```excel
-=SOMA('Bens e Direitos'!E6:E1000)
+=SOMA(Bens!E:E)
 ```
+**Função:** Soma todos os valores da coluna E (Valor) da aba Bens
+**Resultado:** Valor total do patrimônio declarado
 
-**Explicação**:
-- Soma todos os valores de bens e direitos declarados
-- Representa o patrimônio total do contribuinte
-
-### 1.7. Data de Atualização
-
-**Localização**: Dashboard!D20
-
+### Data de Atualização
 ```excel
 =HOJE()
 ```
-
-**Explicação**:
-- `HOJE()`: Função que retorna a data atual do sistema
-- Atualiza automaticamente sempre que a planilha é aberta
-
----
-
-## ➕ 2. Fórmulas de Totalização
-
-### 2.1. Total de Rendimentos
-
-**Localização**: Rendimentos!E[fim da tabela]
-
-```excel
-=SOMA(E6:E999)
-```
-
-**Variante com SUBTOTAL** (recomendada):
-
-```excel
-=SUBTOTAL(9,E6:E999)
-```
-
-**Explicação de SUBTOTAL**:
-- `SUBTOTAL(9, intervalo)`: Função de soma que ignora linhas ocultas
-- `9` = Código para SOMA
-- Útil quando filtros são aplicados
-
-**Outras funções SUBTOTAL**:
-- 1 = MÉDIA
-- 2 = CONT.NÚMEROS
-- 3 = CONT.VALORES
-- 4 = MÁXIMO
-- 5 = MÍNIMO
-- 9 = SOMA
-
-### 2.2. Total com Condição (SOMASE)
-
-**Exemplo**: Somar apenas rendimentos de "Salário"
-
-```excel
-=SOMASE(Rendimentos!C6:C999,"Salário",Rendimentos!E6:E999)
-```
-
-**Explicação**:
-- `SOMASE(intervalo_critério, critério, intervalo_soma)`
-- `C6:C999` = Coluna de Categorias
-- `"Salário"` = Critério de busca
-- `E6:E999` = Coluna de Valores a somar
-
-**Exemplo Prático**:
-```
-C6: Salário | E6: R$ 5.000,00 ✓
-C7: Salário | E7: R$ 5.000,00 ✓
-C8: Aluguel | E8: R$ 1.500,00 ✗
-C9: Salário | E9: R$ 5.000,00 ✓
-
-Resultado: R$ 15.000,00
-```
-
-### 2.3. Total com Múltiplas Condições (SOMASES)
-
-**Exemplo**: Somar deduções de "Educação" acima de R$ 1.000
-
-```excel
-=SOMASES(Deduções!E6:E999, Deduções!C6:C999, "Educação", Deduções!E6:E999, ">1000")
-```
-
-**Explicação**:
-- `SOMASES(intervalo_soma, intervalo_crit1, crit1, intervalo_crit2, crit2, ...)`
-- Permite múltiplos critérios simultâneos
+**Função:** Retorna a data atual do sistema
+**Formato:** DD/MM/AAAA
+**Atualização:** Automática ao abrir o arquivo
 
 ---
 
-## ✅ 3. Fórmulas de Validação
+## 💰 Rendimentos
 
-### 3.1. Validação de Data (Ano Correto)
-
-**Aplicação**: Colunas de DATA em todas as abas
-
-**Fórmula de Validação**:
+### Total de Rendimentos
 ```excel
-=E(ANO(B6)=2025, B6<=HOJE())
+=SOMA(D2:D1000)
 ```
+**Função:** Soma valores de rendimento (linhas 2 a 1000)
+**Localização:** Última linha da coluna D
+**Formato:** R$ #.##0,00
 
-**Explicação**:
-- `E()`: Função lógica AND (todas as condições devem ser verdadeiras)
-- `ANO(B6)=2025`: Verifica se o ano da data é 2025
-- `B6<=HOJE()`: Verifica se a data não é futura
-
-**Mensagem de Erro**:
-```
-"Data inválida! Use datas de 2025 até hoje."
-```
-
-### 3.2. Validação de Valor Positivo
-
-**Aplicação**: Colunas de VALOR
-
-**Fórmula de Validação**:
+### Validação de Categoria
 ```excel
-=E6>0
+Lista: Salário;Aluguel;Honorários;Outros
 ```
+**Tipo:** Validação de Lista
+**Aplica-se à:** Coluna B (Categoria)
+**Permite:** Apenas valores pré-definidos
 
-**Explicação**:
-- Aceita apenas valores maiores que zero
-- Impede valores negativos ou zero
-
-**Mensagem de Erro**:
-```
-"O valor deve ser maior que zero."
-```
-
-### 3.3. Validação de Lista (Categorias)
-
-**Aplicação**: Colunas de CATEGORIA
-
-**Configuração**:
-- Tipo: Lista
-- Fonte: `Salário;Aluguel;Honorários;Outros`
-
-**Alternativa com referência a intervalo**:
+### Formatação Condicional - Valores Altos
 ```excel
-=ValidacoesList!A2:A5
+=D2>10000
 ```
-
-Onde `ValidacoesList` é uma aba oculta com as listas.
+**Condição:** Se valor > R$ 10.000,00
+**Formato:** Fundo verde claro
+**Objetivo:** Destacar rendimentos significativos
 
 ---
 
-## 📈 4. Fórmulas do Resumo Fiscal
+## 📉 Deduções
 
-### 4.1. Base de Cálculo com Proteção
-
-**Localização**: Resumo Fiscal!D9
-
+### Total de Deduções
 ```excel
-=MÁXIMO(0, D6-D7-D8)
+=SOMA(D2:D1000)
 ```
+**Função:** Soma todas as deduções registradas
+**Formato:** R$ #.##0,00
 
-**Explicação**:
-- `MÁXIMO(0, cálculo)`: Garante que o resultado nunca seja negativo
-- Se (Rendimentos - Deduções - Despesas) < 0, retorna 0
-- Previne valores negativos de imposto
-
-**Exemplo**:
-```
-Rendimentos: R$ 10.000,00
-Deduções: R$ 8.000,00
-Despesas: R$ 5.000,00
-
-Sem MÁXIMO: 10.000 - 8.000 - 5.000 = -3.000 (erro!)
-Com MÁXIMO: MÁXIMO(0, -3.000) = 0 (correto)
-```
-
-### 4.2. Imposto com Tabela Progressiva (Avançado)
-
-**Fórmula Completa**:
-
+### Validação de Categoria
 ```excel
-=SE(D9<=2112,00, 0,
-  SE(D9<=2826,65, (D9*0,075)-158,40,
-  SE(D9<=3751,05, (D9*0,15)-370,40,
-  SE(D9<=4664,68, (D9*0,225)-651,73,
-  (D9*0,275)-884,96))))
+Lista: Previdência (INSS);Educação;Saúde;Dependentes
 ```
+**Tipo:** Validação de Lista
+**Aplica-se à:** Coluna B
 
-**Explicação**:
-Estrutura de SE aninhado para tabela progressiva:
-
-1. **Faixa 1** (até R$ 2.112,00): Isento (0%)
-2. **Faixa 2** (R$ 2.112,01 a R$ 2.826,65): 7,5% - R$ 158,40
-3. **Faixa 3** (R$ 2.826,66 a R$ 3.751,05): 15% - R$ 370,40
-4. **Faixa 4** (R$ 3.751,06 a R$ 4.664,68): 22,5% - R$ 651,73
-5. **Faixa 5** (acima de R$ 4.664,68): 27,5% - R$ 884,96
-
-**Exemplo de Cálculo**:
-```
-Base = R$ 5.000,00 (Faixa 5)
-Imposto = (5.000 * 0,275) - 884,96
-Imposto = 1.375 - 884,96
-Imposto = R$ 490,04
-```
-
-### 4.3. Percentual Efetivo de Tributação
-
+### Alerta de Limite - Educação
 ```excel
-=SE(D9>0, D10/D9, 0)
+=SOMASE(B:B;"Educação";D:D)>3561.50
 ```
-
-**Explicação**:
-- `D10/D9` = Imposto / Base de Cálculo
-- `SE(D9>0, ...)`: Evita divisão por zero
-- Retorna a alíquota efetiva paga
-
-**Exemplo**:
-```
-Imposto: R$ 2.035,50
-Base: R$ 13.570,00
-
-Alíquota Efetiva = 2.035,50 / 13.570,00 = 15%
-```
+**Condição:** Se total de Educação > R$ 3.561,50
+**Formato:** Fundo amarelo + Mensagem de alerta
+**Mensagem:** "Atenção: Limite de dedução de educação excedido"
 
 ---
 
-## 🛠️ 5. Fórmulas Auxiliares
+## 💼 Despesas Profissionais
 
-### 5.1. Contagem de Lançamentos
-
+### Total de Despesas
 ```excel
-=CONT.VALORES(Rendimentos!B6:B999)
+=SOMA(D2:D1000)
 ```
+**Função:** Soma todas as despesas profissionais
+**Formato:** R$ #.##0,00
 
-**Explicação**:
-- `CONT.VALORES()`: Conta células não vazias
-- Útil para saber quantos lançamentos foram feitos
-
-### 5.2. Última Data de Lançamento
-
+### Validação de Categoria
 ```excel
-=MÁXIMO(Rendimentos!B6:B999)
+Lista: Material;Software;Aluguel;Energia;Água;Transporte
 ```
+**Tipo:** Validação de Lista
+**Aplica-se à:** Coluna B
 
-**Explicação**:
-- `MÁXIMO()` em intervalo de datas retorna a data mais recente
-
-### 5.3. Média de Rendimentos Mensais
-
+### Total por Categoria
 ```excel
-=MÉDIA(Rendimentos!E6:E999)
+=SOMASE(B:B;"Software";D:D)
 ```
-
-**ou com proteção**:
-
-```excel
-=SE(CONT.VALORES(Rendimentos!E6:E999)>0, MÉDIA(Rendimentos!E6:E999), 0)
-```
-
-### 5.4. Maior Rendimento
-
-```excel
-=MÁXIMO(Rendimentos!E6:E999)
-```
-
-### 5.5. Menor Dedução
-
-```excel
-=SE(CONT.VALORES(Deduções!E6:E999)>0, MÍNIMO(Deduções!E6:E999), 0)
-```
-
-### 5.6. Formatação Condicional - Alertas
-
-**Destacar deduções acima do limite de educação**:
-
-```excel
-=E(C6="Educação", E6>3561,50)
-```
-
-**Formatação**: Fundo vermelho claro
+**Função:** Soma despesas de uma categoria específica
+**Exemplo:** Total gasto em Software/Licenças
 
 ---
 
-## 📊 Fórmulas Estatísticas Avançadas
+## 🏠 Bens e Direitos
 
-### Variância de Rendimentos
-
+### Patrimônio Total
 ```excel
-=VAR.P(Rendimentos!E6:E999)
+=SOMA(E2:E1000)
 ```
+**Função:** Soma valor de todos os bens declarados
+**Formato:** R$ #.##0,00
 
-### Desvio Padrão
-
+### Validação de Tipo
 ```excel
-=DESVPAD.P(Rendimentos!E6:E999)
+Lista: Imóvel Residencial;Imóvel Comercial;Veículo;Investimentos;Outros
 ```
+**Tipo:** Validação de Lista
+**Aplica-se à:** Coluna A (Tipo)
 
-### Mediana
-
+### Total por Tipo de Bem
 ```excel
-=MED(Rendimentos!E6:E999)
+=SOMASE(A:A;"Veículo";E:E)
 ```
+**Função:** Soma valor de um tipo específico de bem
+**Exemplo:** Total investido em veículos
+
+### Bens Adquiridos no Ano
+```excel
+=SOMASE(D:D;">="&DATA(2025;1;1);E:E)
+```
+**Função:** Soma bens adquiridos a partir de 01/01/2025
+**Uso:** Identificar aquisições recentes
 
 ---
 
-## 🔗 Fórmulas de Referência Cruzada
+## 📈 Resumo Fiscal
 
-### Busca de Valor por Categoria (PROCV)
+### Todas as Fórmulas do Resumo
 
+#### 1. Total de Rendimentos
 ```excel
-=PROCV("Salário", Rendimentos!C6:E999, 3, FALSO)
+=SOMA(Rendimentos!D:D)
 ```
 
-**Explicação**:
-- `PROCV(valor_procurado, tabela, coluna, correspondencia_exata)`
-- Busca "Salário" na 1ª coluna e retorna valor da 3ª coluna
-
-### Índice e Correspondência (INDEX + MATCH)
-
+#### 2. Total de Deduções
 ```excel
-=ÍNDICE(Rendimentos!E6:E999, CORRESP("Salário", Rendimentos!C6:C999, 0))
+=SOMA(Deducoes!D:D)
 ```
 
-**Explicação**:
-- Mais flexível que PROCV
-- `CORRESP()` encontra a posição
-- `ÍNDICE()` retorna o valor naquela posição
+#### 3. Total de Despesas
+```excel
+=SOMA(Despesas!D:D)
+```
+
+#### 4. Base de Cálculo
+```excel
+=B4-B5-B6
+```
+
+#### 5. Alíquota Efetiva
+```excel
+=SE(B7>0;B8/B7;0)
+```
+**Função:** Calcula % de imposto sobre rendimento
+**Formato:** Percentual (0,00%)
+
+#### 6. Patrimônio Declarado
+```excel
+=SOMA(Bens!E:E)
+```
+
+#### 7. Variação Patrimonial
+```excel
+=SE(H2>0;(B9-H2)/H2;0)
+```
+**Função:** Calcula variação % vs. ano anterior
+**Requer:** Valor do patrimônio do ano anterior em H2
 
 ---
 
-## ⚠️ Tratamento de Erros
+## 🧐 Fórmulas Avançadas
 
-### SEERRO - Tratamento Genérico
-
+### Média Mensal de Rendimentos
 ```excel
-=SEERRO(D7*0,15, "Erro no cálculo")
+=SOMA(Rendimentos!D:D)/12
 ```
+**Função:** Divide total por 12 meses
+**Uso:** Planejamento financeiro
 
-**Explicação**:
-- Se a fórmula retornar erro, exibe a mensagem
-- Útil para prevenir #DIV/0!, #REF!, #VALOR!
-
-### SEÉ.ERROS - Verificação de Erro
-
+### Rendimentos por Período
 ```excel
-=SE(NÃO(É.ERROS(D7)), D7*0,15, 0)
+=SOMASES(Rendimentos!D:D;Rendimentos!A:A;">="&DATA(2025;1;1);Rendimentos!A:A;"<="&DATA(2025;3;31))
 ```
+**Função:** Soma rendimentos do 1º trimestre
+**Parâmetros:** Data inicial e final
 
-**Explicação**:
-- `É.ERROS()`: Retorna VERDADEIRO se houver erro
-- `NÃO(É.ERROS())`: Inverte a lógica
+### Maior Despesa Registrada
+```excel
+=MÁXIMO(Despesas!D:D)
+```
+**Função:** Identifica maior valor de despesa
+**Complementar:** Usar `=ÍNDICE()` e `=CORRESP()` para identificar descrição
+
+### Contador de Lançamentos
+```excel
+=CONT.VALORES(Rendimentos!D:D)-1
+```
+**Função:** Conta quantos rendimentos foram registrados
+**-1:** Desconta linha de cabeçalho
 
 ---
 
-## 📝 Boas Práticas
+## ⚠️ Observações Importantes
 
-### 1. Usar Referências Nomeadas
+### 🚨 Limitações do Cálculo
+1. **Alíquota simplificada:** O cálculo usa 15% fixo, mas o IR tem tabela progressiva
+2. **Deduções:** Alguns limites não são verificados automaticamente
+3. **Imposto retido:** Não considera IRRF já descontado
 
-**Criar nome para intervalo**:
-```
-Fórmulas > Definir Nome
-Nome: TotalRendimentos
-Refere-se a: =Rendimentos!$E$6:$E$999
-```
+### 🔧 Manutenção
+- **Atualizar anualmente:** Limites de dedução mudam
+- **Validar categorias:** Adicionar novas conforme necessário
+- **Testar fórmulas:** Após qualquer alteração estrutural
 
-**Usar na fórmula**:
-```excel
-=SOMA(TotalRendimentos)
-```
-
-**Vantagens**:
-- Fórmulas mais legíveis
-- Fácil manutenção
-- Menos erros de referência
-
-### 2. Usar Referências Absolutas vs. Relativas
-
-**Relativa** (ajusta ao copiar):
-```excel
-=A1+B1
-```
-
-**Absoluta** (fixa ao copiar):
-```excel
-=$A$1+$B$1
-```
-
-**Mista** (fixa apenas linha ou coluna):
-```excel
-=$A1+B$1
-```
-
-### 3. Documentar Fórmulas Complexas
-
-**Adicionar comentário na célula**:
-```
-Botão direito > Inserir Comentário
-
-"Esta fórmula calcula o imposto usando a tabela progressiva
-do IRPF 2025 com 5 faixas de tributação."
-```
+### 📚 Referências
+- [Tabela Progressiva IR 2025](https://www.gov.br/receitafederal)
+- [Limites de Dedução](https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda)
 
 ---
 
-## 🧑‍🏫 Exemplos Práticos Completos
-
-### Exemplo 1: Dashboard Completo
-
-```excel
-' Célula D4 - Rendimentos Totais
-=SOMA(Rendimentos!E:E)
-
-' Célula D5 - Deduções Totais
-=SOMA(Deduções!E:E)
-
-' Célula D6 - Despesas Totais
-=SOMA('Despesas Profissionais'!E:E)
-
-' Célula D7 - Base de Cálculo
-=MÁXIMO(0, D4-D5-D6)
-
-' Célula D8 - Imposto Estimado
-=D7*0,15
-
-' Célula D9 - Patrimônio
-=SOMA('Bens e Direitos'!E:E)
-```
-
-### Exemplo 2: Resumo por Categoria
-
-Criar tabela auxiliar com totais por categoria:
-
-```excel
-' Coluna A: Categorias
-A2: Salário
-A3: Aluguel
-A4: Honorários
-
-' Coluna B: Totais
-B2: =SOMASE(Rendimentos!C:C, A2, Rendimentos!E:E)
-B3: =SOMASE(Rendimentos!C:C, A3, Rendimentos!E:E)
-B4: =SOMASE(Rendimentos!C:C, A4, Rendimentos!E:E)
-```
-
----
-
-## 🔍 Troubleshooting - Erros Comuns
-
-### Erro #REF!
-
-**Causa**: Referência inválida (aba/célula deletada)
-
-**Solução**:
-```excel
-' Antes (com erro)
-=Rendimentos!E6  ' (se aba foi renomeada)
-
-' Corrigir para
-='Nova Aba'!E6
-```
-
-### Erro #DIV/0!
-
-**Causa**: Divisão por zero
-
-**Solução**:
-```excel
-' Antes
-=D10/D9
-
-' Corrigido
-=SE(D9<>0, D10/D9, 0)
-```
-
-### Erro #VALOR!
-
-**Causa**: Tipo de dados incomp atível
-
-**Solução**:
-```excel
-' Converter texto para número
-=VALOR(SUBSTITUIR(A1,"R$ ",""))
-```
-
----
-
-## 📚 Referências
-
-### Documentação Oficial Microsoft
-- [Funções do Excel (por categoria)](https://support.microsoft.com/pt-br/office/funcoes-do-excel-por-categoria-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb)
-- [Visão geral de fórmulas no Excel](https://support.microsoft.com/pt-br/office/visao-geral-de-formulas-no-excel-ecfdc708-9162-49e8-b993-c311f47ca173)
-
-### Tabela IRPF 2025
-- [Tabela Progressiva Mensal - Receita Federal](https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/tributos/irpf-imposto-de-renda-pessoa-fisica)
-
----
-
-*Última atualização: Dezembro 2025*
+💜 **Dica:** Para modificar fórmulas, sempre faça um backup da planilha antes!

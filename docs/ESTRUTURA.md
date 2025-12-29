@@ -2,317 +2,189 @@
 
 ## 📊 Visão Geral
 
-Este documento detalha a estrutura completa de cada aba da planilha `Controle_IR_2025.xlsx`, incluindo campos, validações, fórmulas e layout.
+O arquivo **Controle_IR_2025.xlsx** é composto por 6 abas principais, cada uma com uma função específica no processo de organização da declaração de imposto de renda.
 
 ---
 
-## 🎯 1. Dashboard
+## 1️♣ Dashboard
 
-### Objetivo
-Fornecer uma visão executiva consolidada de todos os dados fiscais com navegação rápida.
+### 🎯 Objetivo
+Centralizar informações fiscais e facilitar navegação.
 
-### Estrutura
+### 🗂️ Estrutura
 
-#### Seção: Cabeçalho
+| Célula | Conteúdo | Fórmula/Validação |
+|--------|----------|---------------------|
+| **B4** | Rendimentos Totais | `=SOMA(Rendimentos!D:D)` |
+| **B5** | Deduções Totais | `=SOMA(Deducoes!D:D)` |
+| **B6** | Despesas Profissionais | `=SOMA(Despesas!D:D)` |
+| **B7** | Base de Cálculo | `=B4-B5-B6` |
+| **B8** | Imposto Estimado (15%) | `=B7*0.15` |
+| **B9** | Patrimônio Total | `=SOMA(Bens!E:E)` |
+| **B11** | Data de Atualização | `=HOJE()` |
+
+### 🎨 Formatação
+- **Cores:** Verde para valores positivos, Vermelho para alertas
+- **Fonte:** Calibri 14pt para títulos, 12pt para valores
+- **Bordas:** Linhas sólidas ao redor de cada seção
+
+### 🔘 Botões de Navegação
+Botões com hyperlinks para cada aba:
+```vba
+=HYPERLINK("#Rendimentos!A1","💰 Rendimentos")
+=HYPERLINK("#Deducoes!A1","📉 Deduções")
+=HYPERLINK("#Despesas!A1","💼 Despesas")
+=HYPERLINK("#Bens!A1","🏠 Bens")
+=HYPERLINK("#Resumo!A1","📈 Resumo")
 ```
-Linha 1-2: Título "CONTROLE DE IMPOSTO DE RENDA 2025"
-Linha 3: Subtítulo "RESUMO FISCAL 2025"
-```
-
-#### Seção: Indicadores Principais
-| Indicador | Célula | Fórmula | Formato |
-|-----------|---------|---------|--------|
-| Rendimentos Totais | D4 | =SOMA(Rendimentos!E:E) | R$ #.##0,00 |
-| Deduções Totais | D5 | =SOMA(Deduções!E:E) | R$ #.##0,00 |
-| Despesas Profissionais | D6 | =SOMA(Despesas!E:E) | R$ #.##0,00 |
-| Base de Cálculo | D7 | =D4-D5-D6 | R$ #.##0,00 |
-| Imposto Estimado (15%) | D8 | =D7*0,15 | R$ #.##0,00 |
-| Patrimônio Total | D9 | =SOMA(Bens!E:E) | R$ #.##0,00 |
-
-#### Seção: Menu de Navegação
-```
-Colunas A-B (Linhas 12-17):
-- Botão: Dashboard (aba atual)
-- Botão: Rendimentos (link para aba)
-- Botão: Deduções (link para aba)
-- Botão: Despesas Profissionais (link para aba)
-- Botão: Bens e Direitos (link para aba)
-- Botão: Resumo Fiscal (link para aba)
-```
-
-#### Seção: Rodapé
-```
-Linha 20: "Atualizado em" | =HOJE()
-```
-
-### Cores e Formatação
-- **Título**: Fonte Arial 18pt, Negrito, Centralizado
-- **Indicadores**: Fonte Arial 12pt, Alinhamento à direita
-- **Valores**: Fonte Arial 14pt, Negrito, Cor azul (#0066CC)
-- **Botões**: Fundo cinza claro (#E8E8E8), Borda 1pt
 
 ---
 
-## 💵 2. Rendimentos
+## 2️♣ Rendimentos
 
-### Objetivo
-Registrar todos os tipos de rendimentos recebidos durante o ano-calendário.
+### 🎯 Objetivo
+Registrar todas as fontes de renda do contribuinte.
 
-### Estrutura da Tabela
+### 📊 Colunas
 
-| Coluna | Campo | Tipo | Validação | Largura |
-|--------|-------|------|------------|--------|
-| B | DATA | Data | dd/mm/aaaa | 12 |
-| C | CATEGORIA | Lista | Salário, Aluguel, Honorários, Outros | 20 |
-| D | DESCRIÇÃO | Texto | Máx 100 caracteres | 40 |
-| E | VALOR | Moeda | > 0 | 15 |
+| Coluna | Título | Tipo | Validação |
+|--------|---------|------|-------------|
+| **A** | Data | Data | Formato: DD/MM/AAAA |
+| **B** | Categoria | Lista | Salário, Aluguel, Honorários, Outros |
+| **C** | Descrição | Texto | Máximo 255 caracteres |
+| **D** | Valor | Moeda | Formato: R$ #.##0,00 |
 
-### Categorias Disponíveis
-1. **Salário**: Rendimentos de trabalho assalariado
-2. **Aluguel**: Renda de locação de imóveis
-3. **Honorários**: Pagamentos por serviços profissionais
-4. **Outros**: Rendimentos diversos
-
-### Fórmulas
-```excel
-TOTAL (Eúltima linha): =SOMA(E6:E1000)
+### 📋 Categorias Disponíveis
+```
+💼 Salário
+🏠 Aluguel Recebido
+💰 Honorários Profissionais
+📈 Investimentos (Dividendos)
+📄 Outros Rendimentos
 ```
 
-### Layout
-```
-Linha 1-3: Cabeçalho "2. RENDIMENTOS"
-Linha 4: "Registre seus lançamentos abaixo"
-Linha 5: Cabeçalhos da tabela
-Linha 6+: Dados (linhas de lançamento)
-Última linha: TOTAL
-```
-
-### Menu de Navegação
-Mesma estrutura do Dashboard nas colunas A-B
+### 🔢 Linha de Total
+**Última linha:** `=SOMA(D2:D1000)` - Soma automática
 
 ---
 
-## 📋 3. Deduções
+## 3️♣ Deduções
 
-### Objetivo
-Controlar gastos dedutíveis do imposto de renda.
+### 🎯 Objetivo
+Controlar gastos dedutíveis do IR.
 
-### Estrutura da Tabela
+### 📊 Colunas
 
-| Coluna | Campo | Tipo | Validação | Largura |
-|--------|-------|------|------------|--------|
-| B | DATA | Data | dd/mm/aaaa | 12 |
-| C | CATEGORIA | Lista | Ver categorias abaixo | 25 |
-| D | DESCRIÇÃO | Texto | Máx 100 caracteres | 40 |
-| E | VALOR | Moeda | > 0 | 15 |
+| Coluna | Título | Tipo | Validação |
+|--------|---------|------|-------------|
+| **A** | Data | Data | Formato: DD/MM/AAAA |
+| **B** | Categoria | Lista | INSS, Educação, Saúde, Dependentes |
+| **C** | Descrição | Texto | Máximo 255 caracteres |
+| **D** | Valor | Moeda | Formato: R$ #.##0,00 |
 
-### Categorias de Deduções
-1. **Previdenciária (INSS)**: Contribuições obrigatórias e privadas
-2. **Educação**: Despesas com ensino próprio e dependentes
-3. **Saúde**: Planos de saúde, consultas, exames
-4. **Dependentes**: Pensão alimentícia e outros gastos
+### 🏛️ Categorias e Limites (2025)
 
-### Limites de Dedução (IRPF 2025)
-- **Educação**: R$ 3.561,50 por pessoa
-- **Dependentes**: R$ 2.275,08 por dependente
-- **Saúde**: Sem limite
-- **Previdenciária**: Sem limite
-
-### Fórmulas
-```excel
-TOTAL (Eúltima linha): =SOMA(E6:E1000)
-```
-
-### Layout
-Idêntico à aba Rendimentos, com categorias específicas
+| Categoria | Limite Anual | Observações |
+|-----------|--------------|----------------|
+| **🏛️ Previdência (INSS)** | Sem limite | Contribuições oficiais |
+| **🎓 Educação** | R$ 3.561,50 por pessoa | Ensino formal |
+| **🏥 Saúde** | Sem limite | Despesas médicas comprovadas |
+| **👨‍👩‍👧‍👦 Dependentes** | R$ 2.275,08 por dependente | Por ano |
 
 ---
 
-## 💼 4. Despesas Profissionais
+## 4️♣ Despesas Profissionais
 
-### Objetivo
+### 🎯 Objetivo
 Registrar despesas relacionadas à atividade profissional.
 
-### Estrutura da Tabela
+### 📊 Colunas
 
-| Coluna | Campo | Tipo | Validação | Largura |
-|--------|-------|------|------------|--------|
-| B | DATA | Data | dd/mm/aaaa | 12 |
-| C | CATEGORIA | Lista | Ver categorias abaixo | 25 |
-| D | DESCRIÇÃO | Texto | Máx 100 caracteres | 40 |
-| E | VALOR | Moeda | > 0 | 15 |
+| Coluna | Título | Tipo | Validação |
+|--------|---------|------|-------------|
+| **A** | Data | Data | Formato: DD/MM/AAAA |
+| **B** | Categoria | Lista | Material, Software, Aluguel, Energia, Transporte |
+| **C** | Descrição | Texto | Máximo 255 caracteres |
+| **D** | Valor | Moeda | Formato: R$ #.##0,00 |
 
-### Categorias de Despesas
-1. **Material**: Suprimentos de escritório e insumos
-2. **Software/Licenças**: Ferramentas digitais profissionais
-3. **Aluguel**: Espaço comercial, coworking
-4. **Energia/Água**: Contas de utilidades do espaço profissional
-5. **Transporte**: Combustível, passagens relacionadas ao trabalho
-6. **Outros**: Despesas profissionais diversas
-
-### Fórmulas
-```excel
-TOTAL (Eúltima linha): =SOMA(E6:E1000)
+### 💼 Categorias para Profissionais Autônomos
 ```
-
-### Observações
-- Apenas profissionais autônomos podem deduzir despesas profissionais
-- Mantenha comprovação documental de todas as despesas
-- Limite de dedução pode variar conforme legislação
+📏 Material de Escritório
+💻 Software e Licenças
+🏬 Aluguel Comercial
+⚡ Energia e Água
+🚗 Transporte Profissional
+📡 Internet e Telefonia
+```
 
 ---
 
-## 🏠 5. Bens e Direitos
+## 5️♣ Bens e Direitos
 
-### Objetivo
-Inventário completo do patrimônio para declaração.
+### 🎯 Objetivo
+Declarar patrimônio do contribuinte.
 
-### Estrutura da Tabela
+### 📊 Colunas
 
-| Coluna | Campo | Tipo | Validação | Largura |
-|--------|-------|------|------------|--------|
-| B | DESCRIÇÃO | Texto | Máx 200 caracteres | 30 |
-| C | LOCALIZAÇÃO | Texto | Endereço completo | 35 |
-| D | DATA AQUISIÇÃO | Data | dd/mm/aaaa | 15 |
-| E | VALOR | Moeda | > 0 | 15 |
-| F | OBSERVAÇÕES | Texto | Livre | 30 |
+| Coluna | Título | Tipo | Validação |
+|--------|---------|------|-------------|
+| **A** | Tipo | Lista | Imóvel, Veículo, Investimento, Outros |
+| **B** | Descrição | Texto | Máximo 500 caracteres |
+| **C** | Localização | Texto | Endereço completo |
+| **D** | Data Aquisição | Data | Formato: DD/MM/AAAA |
+| **E** | Valor | Moeda | Formato: R$ #.##0,00 |
+| **F** | Observações | Texto | Informações adicionais |
 
-### Tipos de Bens e Direitos
-
-#### Imóveis
-- Apartamentos
-- Casas
-- Terrenos
-- Salas comerciais
-- Garagens
-
-#### Veículos
-- Automóveis
-- Motocicletas
-- Barcos
-- Aeronaves
-
-#### Investimentos
-- Ações
-- Fundos de investimento
-- Títulos públicos
-- Poupança
-- CDBs
-- Criptomoedas
-
-#### Outros Bens
-- Joias
-- Obras de arte
-- Equipamentos profissionais
-- Móveis e eletrodomésticos (acima de R$ 5.000)
-
-### Fórmulas
-```excel
-TOTAL (Eúltima linha): =SOMA(E6:E1000)
+### 🏗️ Tipos de Bens
 ```
-
-### Observações Importantes
-- Declarar bens acima de R$ 5.000,00 (limite de 2025)
-- Usar valor de aquisição, não valor de mercado
-- Para imóveis, incluir benfeitorias se houver
-- Investimentos: usar saldo em 31/12 do ano-calendário
+🏠 Imóvel Residencial
+🏬 Imóvel Comercial
+🚗 Veículo
+📈 Ações e Fundos
+💰 Títulos Públicos
+💳 Aplicações Financeiras
+💎 Outros Bens
+```
 
 ---
 
-## 📈 6. Resumo Fiscal
+## 6️♣ Resumo Fiscal
 
-### Objetivo
-Consolidar automaticamente todos os dados para visão final da declaração.
+### 🎯 Objetivo
+Consolidar todos os dados para visão final.
 
-### Estrutura
+### 📊 Estrutura de Cálculos
 
-#### Seção: Consolidação
-
-| Item | Célula | Fórmula | Formato |
-|------|---------|---------|--------|
-| Total de Rendimentos | D6 | =Rendimentos!E[fim] | R$ #.##0,00 |
-| Total de Deduções | D7 | =Deduções!E[fim] | R$ #.##0,00 |
-| Total de Despesas Profissionais | D8 | =Despesas!E[fim] | R$ #.##0,00 |
-| Base de Cálculo | D9 | =D6-D7-D8 | R$ #.##0,00 |
-| Imposto Estimado (15%) | D10 | =D9*0,15 | R$ #.##0,00 |
-| Patrimônio Total Declarado | D11 | =Bens!E[fim] | R$ #.##0,00 |
-
-### Fórmulas Detalhadas
-
-#### Base de Cálculo
-```excel
-=MAX(0, [Rendimentos] - [Deduções] - [Despesas Profissionais])
+```
+┌──────────────────────────┐
+│ RESUMO FISCAL 2025       │
+├──────────────────────────┤
+│ Rendimentos       R$ XXX │
+│ (-) Deduções      R$ XXX │
+│ (-) Despesas       R$ XXX │
+├──────────────────────────┤
+│ Base de Cálculo   R$ XXX │
+│ Imposto (15%)     R$ XXX │
+├──────────────────────────┤
+│ Patrimônio Total  R$ XXX │
+└──────────────────────────┘
 ```
 
-#### Imposto Estimado (Simplificado - 15%)
-```excel
-=SE([Base de Cálculo] > 0, [Base de Cálculo] * 0,15, 0)
-```
+### 📄 Fórmulas do Resumo
 
-### Observações
-- Cálculo simplificado para estimativa
-- Alíquota real varia conforme tabela progressiva
-- Consulte contador para cálculo preciso
-- Valores negativos são tratados como zero
+| Item | Fórmula | Descrição |
+|------|---------|-------------|
+| **Total Rendimentos** | `=SOMA(Rendimentos!D:D)` | Soma todos os rendimentos |
+| **Total Deduções** | `=SOMA(Deducoes!D:D)` | Soma todas as deduções |
+| **Total Despesas** | `=SOMA(Despesas!D:D)` | Soma todas as despesas |
+| **Base de Cálculo** | `=B4-B5-B6` | Rendimentos - Deduções - Despesas |
+| **Imposto Estimado** | `=B7*0.15` | 15% da base de cálculo |
+| **Patrimônio Total** | `=SOMA(Bens!E:E)` | Soma valor de todos os bens |
 
 ---
 
-## 🔗 Relacionamentos entre Abas
+## 🔒 Proteções e Validações
 
-```
-[Dashboard]
-    │
-    ├──▶ [Rendimentos] ────────┐
-    │                             │
-    ├──▶ [Deduções] ─────────├──▶ [Resumo Fiscal]
-    │                             │
-    ├──▶ [Despesas Profissionais] ─┤
-    │                             │
-    └──▶ [Bens e Direitos] ──────┘
-```
-
-### Dependências de Dados
-- **Dashboard** ← Lê de todas as outras abas
-- **Resumo Fiscal** ← Lê de: Rendimentos, Deduções, Despesas, Bens
-- **Demais abas** → Independentes (apenas entrada de dados)
-
----
-
-## ⚙️ Configurações Globais
-
-### Formatação de Números
-```
-Moeda: R$ #.##0,00
-Data: dd/mm/aaaa
-Percentual: 0,00%
-```
-
-### Proteção de Células
-- **Células de fórmula**: Protegidas (não editáveis)
-- **Células de entrada**: Desbloqueadas (editáveis)
-
-### Validações de Dados
-- **Datas**: Apenas datas válidas do ano-calendário
-- **Valores**: Apenas números positivos
-- **Categorias**: Listas suspensas predefinidas
-
----
-
-## 📌 Notas Técnicas
-
-### Performance
-- Planilha otimizada para até 1.000 lançamentos por aba
-- Fórmulas utilizam referências fixas para evitar recalculo excessivo
-- Formatação condicional limitada para manter performance
-
-### Compatibilidade
-- Microsoft Excel 2016+
-- LibreOffice Calc 7.0+
-- Google Sheets (com limitações de formatação)
-
-### Backup
-Recomenda-se backup automático ou manual diário.
-
----
-
-*Última atualização: Dezembro 2025*
+### 🚫 Células Bloqueadas
+- Células de fórmula estão protegidas contra edição acidental
+- Apenas campos de entrada estão liber
